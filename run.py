@@ -152,28 +152,18 @@ def fight(player_board):
                         elif COMPUTER_BOARD_STATIC[brd[0]][brd[1]][0] is 0:
                             show_fail_animation(COMPUTER_BOARD[brd[0]][brd[1]][1:])
                             turn = True
-                            count += 1
                             pygame.display.flip()
                             COMPUTER_BOARD[brd[0]][brd[1]][0] = 1
                             COMPUTER_BOARD_STATIC = copy.deepcopy(COMPUTER_BOARD)
 
                             step = ai_turn(PLAYER_BOARD)
-                            while step is not None or step == 2:
+                            while step is not None:
                                 draw_board(PLAYER_BOARD)
                                 pygame.display.flip()
                                 FPSCLOCK.tick(60)
                                 if check_finish_player(PLAYER_BOARD):
                                     finish(player=True)
-                                if step is not None:
-                                    if step == 2:
-                                        FOUND_SHIP = None
-                                        step = ai_turn(PLAYER_BOARD,pos=None)
-                                    else:
-                                        FOUND_SHIP = step
-                                        step = ai_turn(PLAYER_BOARD,pos=step)
-                                elif FOUND_SHIP is not None:
-                                    step = ai_turn(PLAYER_BOARD,pos=FOUND_SHIP)
-
+                                step = ai_turn(PLAYER_BOARD)
 
                             if check_finish_player(PLAYER_BOARD):
                                 finish(player=True)
@@ -226,20 +216,39 @@ def find_neighboor_computer(board, pos, previous_pos=None):
 
     return positions, diagonals
 
-def ai_turn(board, pos=None):
-    print(pos)
-    positions = []
-    if pos is None:
+def ai_turn(board):
+    particle = None
+    particle_posses = []
+    index = None
+    selected_particle = None
+    for i,raw in enumerate(board):
+        for j,p in enumerate(raw):
+            if p[0] == 3 and particle is None:
+                poss = []
+                for n in range(i - 1, i + 2):
+                    for m in range(j - 1, j + 2):
+                        if m in range(10) and n in range(10) and [i, j] != [n, m]:
+                            if board[n][m][0] != 3 and board[n][m][0] != 1:
+                                poss.append([n,m])
+                if len(poss) != 0:
+                    particle = p
+                    particle_posses = poss.copy()
+                    break
+    if particle is not None:
+        index = np.random.randint(0, len(particle_posses))
+        selected_particle = particle_posses[index]
+    else:
+        particle_posses = []
         for i,raw in enumerate(board):
             for j,p in enumerate(raw):
                 if p[0] == 0 or p[0] == 2:
-                    positions.append([i,j])
-        particle = np.random.randint(0,len(positions))
-        selected_particle = positions[particle]
-    else:
-        positions, _ = find_neighboor_computer(board, pos)
-        particle = np.random.randint(0, len(positions))
-        selected_particle = positions[particle]
+                    particle_posses.append([i,j])
+        index = np.random.randint(0,len(particle_posses))
+        selected_particle = particle_posses[index]
+    print(particle, 'particle')
+    print(selected_particle, 'selected particle')
+    print(board[selected_particle[0]][selected_particle[1]][0],'posses')
+    print('***************')
     if board[selected_particle[0]][selected_particle[1]][0] == 2:
         show_blowup_animation(board[selected_particle[0]][selected_particle[1]][1:])
         FPSCLOCK.tick(5)
@@ -259,8 +268,6 @@ def ai_turn(board, pos=None):
         show_fail_animation(board[selected_particle[0]][selected_particle[1]][1:])
         board[selected_particle[0]][selected_particle[1]][0] = 1
         return None
-
-
 def show_blowup_animation(pos):
     for image in BLOWUP_EXPLOSION:
         image = pygame.transform.scale(image, (PARTICLE_WIDTH, PARTICLE_HEIGHT))
