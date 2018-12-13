@@ -565,18 +565,19 @@ def main():
             elif button == 2:
                 pygame.quit()
 
-
-if __name__ == "__main__":
+def start():
     splash = True
     while splash:
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
             pygame.quit()
 
-        if SPLASH:
-            splash_screen(SPLASH)
-            SPLASH = False
-            splash = False
+        splash_screen(SPLASH)
+        splash = False
     main()
+
+
+if __name__ == "__main__":
+    start()
 
 
