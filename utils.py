@@ -24,6 +24,9 @@ def find_available_positions(length, vertical, board):
                                                         elif board[i+k][j] == 1 or find_neighbour([i+k,j], board) is False:
                                                              pos = None
                                                              break
+                                                else:
+                                                        pos = None
+                                                        break
                                         if pos is not None:
                                                 positions.append(pos)
         else:
@@ -38,6 +41,9 @@ def find_available_positions(length, vertical, board):
                                                         elif board[i][j+k] == 1 or find_neighbour([i,j+k],board) is False:
                                                              pos = None
                                                              break
+                                                else:
+                                                        pos = None
+                                                        break
                                         if pos is not None:
                                                 positions.append(pos)
         return positions
@@ -48,6 +54,7 @@ def set(length, board):
         if len(positions) == 0:
                 generate_board()
         coord = positions[np.random.randint(0, len(positions))]
+        print(length, coord)
         place_ship(coord,board)
 
 def place_ship(coord,board):

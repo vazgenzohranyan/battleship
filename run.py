@@ -245,10 +245,6 @@ def ai_turn(board):
                     particle_posses.append([i,j])
         index = np.random.randint(0,len(particle_posses))
         selected_particle = particle_posses[index]
-    print(particle, 'particle')
-    print(selected_particle, 'selected particle')
-    print(board[selected_particle[0]][selected_particle[1]][0],'posses')
-    print('***************')
     if board[selected_particle[0]][selected_particle[1]][0] == 2:
         show_blowup_animation(board[selected_particle[0]][selected_particle[1]][1:])
         FPSCLOCK.tick(5)
@@ -565,7 +561,7 @@ def main():
             elif button == 2:
                 pygame.quit()
 
-def start():
+def start_game():
     splash = True
     while splash:
         event = pygame.event.poll()
@@ -578,6 +574,6 @@ def start():
 
 
 if __name__ == "__main__":
-    start()
+    start_game()
 
 
