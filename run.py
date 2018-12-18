@@ -264,6 +264,7 @@ def ai_turn(board):
         show_fail_animation(board[selected_particle[0]][selected_particle[1]][1:])
         board[selected_particle[0]][selected_particle[1]][0] = 1
         return None
+
 def show_blowup_animation(pos):
     for image in BLOWUP_EXPLOSION:
         image = pygame.transform.scale(image, (PARTICLE_WIDTH, PARTICLE_HEIGHT))
@@ -514,10 +515,20 @@ def check_for_click(pos, size):
 
 def show_help():
     MENU_POS = (SCREEN_LENGTH / 2 - 100, BANNER_y + 300)
-    myfont = pygame.font.SysFont('Comic Sans MS', 15)
-    textsurface = myfont.render('Some text', True, (0, 0, 0))
+    myfont = pygame.font.SysFont('Comic Sans MS', 25)
+    textsurface = myfont.render('Battleship is board game constructing to play with 2 players.', True, WHITE)
+    textsurface_1 = myfont.render('First you need to place your ships with length 4,3,2,1.', True, WHITE)
+    textsurface_2 = myfont.render('To do it use mouse keys.Left key for placing(selecting) and right for changing angle.', True, WHITE)
+    textsurface_3 = myfont.render('In order to win you need to place them carefully.(Hint - place ships near to each other and wall).', True, WHITE)
+    textsurface_4 = myfont.render('Then start attacking computer.If you beat part of board start finding other parts next to it untill you beat the whole ship.', True, WHITE)
+    textsurface_5 = myfont.render('Wins player who first finds all the ships of opponent.', True, WHITE)
     screen.blit(picture, (0, 0))
-    screen.blit(textsurface, (SCREEN_LENGTH/2 - textsurface.get_rect()[2], SCREEN_WIDTH/2 - textsurface.get_rect()[3]))
+    screen.blit(textsurface, (SCREEN_LENGTH/2 - textsurface.get_rect()[2]/2, 30+textsurface.get_rect()[3]))
+    screen.blit(textsurface_1, (SCREEN_LENGTH/2 - textsurface_1.get_rect()[2]/2,30+ 2*textsurface.get_rect()[3]))
+    screen.blit(textsurface_2, (SCREEN_LENGTH/2 - textsurface_2.get_rect()[2]/2, 30+3*textsurface.get_rect()[3]))
+    screen.blit(textsurface_3, (SCREEN_LENGTH/2 - textsurface_3.get_rect()[2]/2, 30+4*textsurface.get_rect()[3]))
+    screen.blit(textsurface_4, (SCREEN_LENGTH/2 - textsurface_4.get_rect()[2]/2, 30+5*textsurface.get_rect()[3]))
+    screen.blit(textsurface_5, (SCREEN_LENGTH/2 - textsurface_5.get_rect()[2]/2, 30+6*textsurface.get_rect()[3]))
     pygame.display.flip()
     screen.blit(menu, MENU_POS)
     pygame.display.flip()
